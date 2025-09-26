@@ -1,0 +1,18 @@
+import { workflowSchema, type N8nWorkflow } from './n8n-schema';
+
+export const validateWorkflowJson = (json: string): N8nWorkflow => {
+  let data: unknown;
+  try {
+    data = JSON.parse(json);
+  } catch {
+    throw new Error('Generated workflow is not valid JSON');
+  }
+
+  const result = workflowSchema.safeParse(data);
+  if (!result.success) {
+    throw new Error('Generated workflow does not match n8n schema');
+  }
+
+  return result.data;
+};
+
