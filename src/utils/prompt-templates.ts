@@ -3,12 +3,32 @@ export const buildGenerationPrompt = (userPrompt: string) => `Generate a valid n
 ${userPrompt}
 """
 
+CRITICAL: Respond with ONLY the JSON object. No markdown, no code blocks, no explanations.
+
+Example n8n workflow structure:
+{
+  "name": "My Workflow",
+  "nodes": [
+    {
+      "id": "node-1",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    }
+  ],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "staticData": null
+}
+
 Requirements:
-- Respond with only JSON, no markdown.
-- Follow best practices: include nodes for input triggers, actions, and outputs.
-- Provide valid connections between nodes.
-- Include optional error handling (e.g., error workflow branch) when helpful.
-- Use environment variables for secrets using {{$env.SECRET_NAME}}.
-- Ensure node parameters are well-structured and n8n-compatible.
+- Each node must have: id, name, type, typeVersion, position (array of 2 numbers), parameters (object)
+- connections is an object where keys are node names, values are objects with "main" arrays
+- Use real n8n node types like: n8n-nodes-base.webhook, n8n-nodes-base.httpRequest, n8n-nodes-base.set, etc.
+- Use environment variables for secrets: {{$env.API_KEY}}
+- position should be [x, y] coordinates like [250, 300]
 `;
 

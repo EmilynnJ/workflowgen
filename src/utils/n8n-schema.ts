@@ -32,10 +32,10 @@ const connectionsSchema = z.record(
 export const workflowSchema = z.object({
   name: z.string().optional(),
   nodes: z.array(nodeSchema),
-  connections: connectionsSchema,
+  connections: connectionsSchema.optional(),
   active: z.boolean().optional(),
   settings: z.record(z.any()).optional(),
-  staticData: z.record(z.any()).optional(),
+  staticData: z.union([z.record(z.any()), z.null()]).optional(),
 });
 
 export type N8nWorkflow = z.infer<typeof workflowSchema>;

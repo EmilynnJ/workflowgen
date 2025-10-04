@@ -10,7 +10,8 @@ export const validateWorkflowJson = (json: string): N8nWorkflow => {
 
   const result = workflowSchema.safeParse(data);
   if (!result.success) {
-    throw new Error('Generated workflow does not match n8n schema');
+    console.error('Validation errors:', JSON.stringify(result.error.format(), null, 2));
+    throw new Error(`Generated workflow does not match n8n schema: ${result.error.issues[0]?.message}`);
   }
 
   return result.data;

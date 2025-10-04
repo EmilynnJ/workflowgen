@@ -1,8 +1,13 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export type LLMProvider = 'openai' | 'anthropic';
 
 export interface Config {
   provider: LLMProvider;
   openAiApiKey?: string;
+  openAiOrgId?: string;
   anthropicApiKey?: string;
   model: string;
   temperature: number;
@@ -14,6 +19,7 @@ const provider = (process.env.LLM_PROVIDER || 'openai') as LLMProvider;
 const config: Config = {
   provider,
   openAiApiKey: process.env.OPENAI_API_KEY,
+  openAiOrgId: process.env.OPENAI_ORG_ID,
   anthropicApiKey: process.env.ANTHROPIC_API_KEY,
   model:
     process.env.LLM_MODEL || (provider === 'openai' ? 'gpt-4o-mini' : 'claude-3-5-sonnet'),

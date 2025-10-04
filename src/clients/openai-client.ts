@@ -13,6 +13,15 @@ export const openAiClient = async (prompt: string): Promise<LLMResponse> => {
     throw new Error('OPENAI_API_KEY is not set');
   }
 
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${config.openAiApiKey}`,
+    'Content-Type': 'application/json',
+  };
+
+  if (config.openAiOrgId) {
+    headers['OpenAI-Organization'] = config.openAiOrgId;
+  }
+
   const response = await axios.post(
     `${OPENAI_API_BASE_URL}/chat/completions`,
     {
@@ -32,10 +41,7 @@ export const openAiClient = async (prompt: string): Promise<LLMResponse> => {
       ],
     },
     {
-      headers: {
-        Authorization: `Bearer ${config.openAiApiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
     },
   );
 
